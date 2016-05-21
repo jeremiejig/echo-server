@@ -15,15 +15,18 @@ INSTALL ?= install
 INSTALL_PROGRAM ?= $(INSTALL)
 INSTALL_DATA ?= $(INSTALL) -m 644
 
+# Using libevent
+LDFLAGS += -levent
+
 # Target
 
 all: echo-server
 
 echo-server: $(OBJ)
-	$(CC) $(LDFLAGS) -o $@ $<
+	$(CC) -o $@ $< $(LDFLAGS)
 
 clean:
-	rm *.o echo-server
+	-rm *.o echo-server 2> /dev/null
 
 install: all installdirs
 	$(INSTALL_PROGRAM) echo-server $(DESTDIR)$(bindir)/echo-server
@@ -38,4 +41,4 @@ uninstall:
 	rm $(DESTDIR)$(bindir)/echo-server
 
 
-.PHONY: all clean
+.PHONY: all clean install installdirs uninstall install-strip
