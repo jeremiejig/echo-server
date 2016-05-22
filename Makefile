@@ -17,8 +17,10 @@ INSTALL_PROGRAM ?= $(INSTALL)
 INSTALL_DATA ?= $(INSTALL) -m 644
 
 # Using libevent
-#LDFLAGS +=
+LDFLAGS ?= -pie
 LDLIBS += -levent
+CFLAGS ?= -g -fpie
+CFLAGS += -std=c99 -Wall
 
 # Target
 
