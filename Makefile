@@ -2,7 +2,8 @@
 .SUFFICES:
 .SUFFICES: .c .o
 
-OBJ=main.o
+OBJ=main.o echo-server.o
+HEADER=common.h
 
 # install dir variable
 
@@ -16,14 +17,16 @@ INSTALL_PROGRAM ?= $(INSTALL)
 INSTALL_DATA ?= $(INSTALL) -m 644
 
 # Using libevent
-LDFLAGS += -levent
+#LDFLAGS +=
+LDLIBS += -levent
 
 # Target
 
 all: echo-server
 
+$(OBJ): $(HEADER)
+
 echo-server: $(OBJ)
-	$(CC) -o $@ $< $(LDFLAGS)
 
 clean:
 	-rm *.o echo-server 2> /dev/null
