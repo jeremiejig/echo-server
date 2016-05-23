@@ -3,7 +3,7 @@
 .SUFFICES: .c .o
 
 OBJ=main.o echo-server.o
-HEADER=common.h
+HEADER=common.h echo-server.h
 
 # install dir variable
 
