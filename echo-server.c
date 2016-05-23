@@ -93,7 +93,7 @@ int do_write(struct client* clientp) {
 		count = 0;
 	}
 	else if(errno == EAGAIN || errno == EWOULDBLOCK) {
-		// printf("repending write %d \n", clientp->fd);
+		// printf("pending write %d \n", clientp->fd);
 		event_add(clientp->event_write, 0);
 	}
 	else if(errno == ECONNRESET) {
@@ -108,6 +108,7 @@ int do_write(struct client* clientp) {
 void on_read_available(evutil_socket_t fd, short what, void* data) {
 	struct client* clientp = data;
 	int count;
+	printf("read available %d\n", fd);
 	while(clientp->read_pos < BUFFER_SIZE && (count = read(fd, clientp->buffer + clientp->read_pos, BUFFER_SIZE - clientp->read_pos)) > 0) {
 		//printf("read %d bytes on %d\n", count, fd);
 		clientp->read_pos += count;
@@ -115,10 +116,13 @@ void on_read_available(evutil_socket_t fd, short what, void* data) {
 	// nothing to read
 	if(count < 0) {
 		//perror("read");
-		if(clientp->read_pos != clientp->write_pos)
+		if(clientp->read_pos != clientp->write_pos) {
+			// printf("pending write %d \n", clientp->fd);
 			event_add(clientp->event_write, 0);
-		else
+		} else {
+			// printf("pending read %d \n", clientp->fd);
 			event_add(clientp->event_read, 0);
+		}
 	}
 	// buffer full
 	else if(count > 0) {
@@ -139,6 +143,7 @@ void on_read_available(evutil_socket_t fd, short what, void* data) {
 void on_write_available(evutil_socket_t fd, short what, void* data) {
 	struct client* clientp = data;
 	int count;
+	printf("write available %d\n", fd);
 	while((count = do_write(clientp)) > 0);
 	// If return -1 do_write will have reenqueue event_write
 	if(count == 0) {
