@@ -1,0 +1,20 @@
+Source: echo-server
+Section: universe/net
+Priority: optional
+Maintainer: jeremiejig <me@jeremiejig.fr>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+Homepage: https://github.com/jeremiejig/echo-server
+#Vcs-Git: git://git.debian.org/collab-maint/echo-server.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/echo-server.git;a=summary
+
+Package: echo-server
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: echo-server with high I/O performance
+ This is an implementation of echo-server using libevent.
+
+Package: echo-server-doc
+Architecture: all
+Description: documentation for echo-server
+ <insert long description, indented with spaces>

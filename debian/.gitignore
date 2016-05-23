@@ -1,0 +1,6 @@
+*.ex
+*.EX
+*.log
+files
+*.substvars
+echo-server*/

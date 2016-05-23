@@ -1,0 +1,6 @@
+echo-server (1.0) unstable; urgency=low
+
+  * Initial Release.
+  * Using libevent.
+
+ -- jeremiejig <me@jeremiejig.fr>  Mon, 23 May 2016 19:45:12 +0200
