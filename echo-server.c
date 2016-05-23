@@ -116,13 +116,8 @@ void on_read_available(evutil_socket_t fd, short what, void* data) {
 	// nothing to read
 	if(count < 0) {
 		//perror("read");
-		if(clientp->read_pos != clientp->write_pos) {
-			// printf("pending write %d \n", clientp->fd);
-			event_add(clientp->event_write, 0);
-		} else {
-			// printf("pending read %d \n", clientp->fd);
-			event_add(clientp->event_read, 0);
-		}
+		event_add(clientp->event_write, 0);
+		event_add(clientp->event_read, 0);
 	}
 	// buffer full
 	else if(count > 0) {
@@ -146,7 +141,7 @@ void on_write_available(evutil_socket_t fd, short what, void* data) {
 	printf("write available %d\n", fd);
 	while((count = do_write(clientp)) > 0);
 	// If return -1 do_write will have reenqueue event_write
-	if(count == 0) {
+	if(clientp->read_pos == 0) {
 		event_add(clientp->event_read, 0);
 	}
 }
